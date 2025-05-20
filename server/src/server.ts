@@ -2,10 +2,12 @@ import config from './config/common';
 import express from 'express';
 import gameRoutes from './routes/game';
 import { errorHandler } from './middlewares/errorHandler';
+import session from './middlewares/session';
 
 const app = express();
 
 app.use(express.json());
+app.use(session(config.sessionSecret, config.nodeEnv));
 
 // Routes
 app.use('/api/game', gameRoutes);
