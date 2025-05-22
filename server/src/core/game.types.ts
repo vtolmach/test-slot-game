@@ -18,3 +18,10 @@ export interface SpinResult {
   reward: number;
   credits: number;
 }
+
+export enum GameStatus {
+  Initial = 'initial',
+  Playing = 'playing',
+  Started = 'started',
+  Error = 'error'
+}

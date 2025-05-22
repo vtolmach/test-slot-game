@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import GameCore from '../core/game.core';
+import { GameStatus } from "../core/game.types";
 
 export const spin = (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -7,12 +8,17 @@ export const spin = (req: Request, res: Response, next: NextFunction) => {
     const result = game.spin();
 
     req.session.credits = result.credits;
-    if(result.credits > 0) {
-      req.session.status = 'playing';
+    if (result.credits > 0) {
+      req.session.status = GameStatus.Playing;
     } else {
-      req.session.status = 'initial';
+      req.session.status = GameStatus.Initial;
     }
-    res.json({ status: req.session.status, ...result });
+    res.json({
+      data: {
+        status: req.session.status,
+        ...result,
+      },
+    });
   } catch (error) {
     next(error);
   }
@@ -24,27 +30,35 @@ export const currentGame = async (
   next: NextFunction,
 ) => {
   try {
-    res.json({ credits: req.session.credits || 0, status: req.session.status || 'initial' });
+    res.json({
+      data: {
+        credits: req.session.credits || 0,
+        status: req.session.status || GameStatus.Initial,
+      },
+    });
   } catch (error) {
     next(error);
   }
 };
 
 export const startGame = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
+  req: Request,
+  res: Response,
+  next: NextFunction,
 ) => {
   try {
     req.session.credits = 10;
-    req.session.status = 'playing';
-    res.json({ credits: req.session.credits, status: req.session.status });
+    req.session.status = GameStatus.Started;
+    res.json({
+      data: {
+        credits: req.session.credits,
+        status: req.session.status,
+      },
+    });
   } catch (error) {
     next(error);
   }
 };
-
-
 
 export const cashOut = async (
   req: Request,
@@ -55,11 +69,13 @@ export const cashOut = async (
     const credits = req.session.credits;
     req.session.regenerate((err) => {
       req.session.credits = 0;
-      req.session.status = 'initial';
+      req.session.status = GameStatus.Initial;
       res.json({
-        cashedOut: credits,
-        status: req.session.status,
-        credits: req.session.credits,
+        data: {
+          cashedOut: credits,
+          status: req.session.status,
+          credits: req.session.credits,
+        },
       });
       if (err) return next(err);
     });

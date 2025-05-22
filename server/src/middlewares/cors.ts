@@ -1,6 +1,7 @@
 import cors from 'cors';
+import config from '../config/common';
 const corsOptions = {
-    origin: ['http://localhost:5173'],
+    origin: config.corsOrigin,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']

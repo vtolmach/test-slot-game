@@ -15,13 +15,13 @@ export const Reels = ({ letters = [] }: ReelsProps) => {
     useEffect(() => {
 
         const animate = async  ()=> {
-            const letters_: (Letter | '?')[] = new Array<Letter>(3);
-            letters_.fill('?');
-            setAnimatedLetters(letters_);
+            const progress: (Letter | '?')[] = new Array<Letter>(3);
+            progress.fill('?');
+            setAnimatedLetters(progress);
             for (const index in letters) {
                 await timeout(1000);
-                letters_[index] = letters[index];
-                setAnimatedLetters([...letters_]);
+                progress[index] = letters[index];
+                setAnimatedLetters([...progress]);
             }
         };
         animate();
