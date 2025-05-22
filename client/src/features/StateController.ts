@@ -47,7 +47,8 @@ export const StateController = () => {
       setMessage(`You cached out: ${result.credits}`);
     }).catch((e) => {
       console.error(e);
-      setMessage('Something went wrong')
+      setMessage('Something went wrong');
+      setStatus(GameStatus.Error);
     }).finally(
       () =>  setLoading(false)
     );
@@ -74,6 +75,7 @@ export const StateController = () => {
       setMessage('Something went wrong');
       setLoading(false);
       setSpinning(false);
+      setStatus(GameStatus.Error);
     })
   }
 
