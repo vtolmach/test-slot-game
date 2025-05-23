@@ -8,7 +8,6 @@ interface Config {
     sessionSecret: string;
     corsOrigin: RegExp
 }
-console.log(process.env.CORS_ORIGIN);
 const config: Config = {
     port: Number(process.env.PORT) || 3000,
     nodeEnv: process.env.NODE_ENV || 'development',
