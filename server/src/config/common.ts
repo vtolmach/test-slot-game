@@ -6,14 +6,13 @@ interface Config {
     port: number;
     nodeEnv: string;
     sessionSecret: string;
-    corsOrigin: string[]
+    corsOrigin: (string| RegExp)[]
 }
 
 const config: Config = {
     port: Number(process.env.PORT) || 3000,
     nodeEnv: process.env.NODE_ENV || 'development',
     sessionSecret: process.env.SESSION_SECRET || 'some-default-secret',
-    corsOrigin: [ process.env.CORS_ORIGIN || '/http[s]\/\/localhost:*/' ],
+    corsOrigin: [ new RegExp(process.env.CORS_ORIGIN || '.*')],
 };
-
 export default config;
